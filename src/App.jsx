@@ -15,6 +15,10 @@ function App() {
 
   const diceElements = dice.map((die) => <Die value={die} />);
 
+  function rollDice() {
+    setDice(allNewDice());
+  }
+
   return (
     <div className="container">
       <div className="inside--container">
@@ -25,12 +29,8 @@ function App() {
             current value between rolls.
           </p>
         </div>
-        <div className="die--wrapper">
-          {diceElements} 
-        </div>
-        <div className="roll">
-          <button>Roll</button>
-        </div>
+        <div className="die--wrapper">{diceElements}</div>
+        <button onClick={rollDice}>Roll</button>
       </div>
     </div>
   );
