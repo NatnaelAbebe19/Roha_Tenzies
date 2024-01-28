@@ -1,11 +1,22 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Die from "./components/Die";
 import { nanoid } from "nanoid";
 import "./App.css";
 
 function App() {
   const [dice, setDice] = useState(allNewDice());
+  const [tenzies, setTenzies] = useState(false);
 
+  React.useEffect(() => {
+    const allHeld = dice.every((die) => die.isHeld);
+    const firstValue = dice[0].value;
+    const allSameValue = dice.every((die) => die.value === firstValue);
+
+    if (allHeld && allSameValue) {
+      setTenzies(true);
+      console.log("You won");
+    }
+  }, [dice]);
   function allNewDice() {
     let newDice = [];
     for (let i = 0; i < 10; i++) {
@@ -39,9 +50,11 @@ function App() {
     />
   ));
   function rollDice() {
-    setDice((oldDice) => oldDice.map(die=> {
-      return die.isHeld? die : generateNewDie();
-    }));
+    setDice((oldDice) =>
+      oldDice.map((die) => {
+        return die.isHeld ? die : generateNewDie();
+      })
+    );
   }
 
   return (
@@ -55,7 +68,7 @@ function App() {
           </p>
         </div>
         <div className="die--wrapper">{diceElements}</div>
-        <button onClick={rollDice}>Roll</button>
+        <button onClick={rollDice}>{tenzies ? "New game" : "Roll"}</button>
       </div>
     </div>
   );
