@@ -48,7 +48,6 @@ function App() {
       isHeld={die.isHeld}
       holdDice={() => holdDice(die.id)}
     />
-    
   ));
   function rollDice() {
     if (!tenzies) {
@@ -68,13 +67,14 @@ function App() {
       <div className="inside--container">
         <div className="header">
           {tenzies && <Confetti />}
-          <h2>Tenzies</h2>
+          <h1>Tenzies</h1>
           <p>
             Roll until all dice are the same. Click each die to freeze it at its
             current value between rolls.
           </p>
         </div>
         <div className="die--wrapper">{diceElements}</div>
+        {tenzies && <span className="win">You won!</span>}
         <button onClick={rollDice}>{tenzies ? "New game" : "Roll"}</button>
       </div>
     </div>
