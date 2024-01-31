@@ -9,6 +9,26 @@ function App() {
   const [dice, setDice] = useState(allNewDice());
   const [tenzies, setTenzies] = useState(false);
   const [clickCount, setClickCount] = useState(0);
+  const [startTime, setStartTime] = useState(null);
+  const [elapseTime, setElapseTime] = useState(0);
+
+  let timerInterval;
+  React.useEffect(() => {
+    if (startTime && !tenzies) {
+      timerInterval = setInterval(() => {
+        const currentTime = new Date();
+        const elapse = Math.floor((currentTime - startTime) / 1000);
+        setElapseTime(elapse);
+      }, 1000);
+    }
+    return () => {
+      clearInterval(timerInterval);
+    };
+  }, [startTime, tenzies]);
+
+  const startGame = () => {
+    setStartTime(new Date());
+  };
 
   React.useEffect(() => {
     const allHeld = dice.every((die) => die.isHeld);
@@ -34,7 +54,11 @@ function App() {
       id: nanoid(),
     };
   }
+
   function holdDice(id) {
+    if (!startTime) {
+      startGame();
+    }
     setDice((oldDice) =>
       oldDice.map((die) => {
         return die.id === id ? { ...die, isHeld: !die.isHeld } : die;
@@ -51,6 +75,7 @@ function App() {
       tenzies={tenzies}
     />
   ));
+
   function rollDice() {
     if (!tenzies) {
       setClickCount((prevCount) => prevCount + 1);
@@ -63,10 +88,12 @@ function App() {
       setTenzies(false);
       setDice(allNewDice());
       setClickCount(0);
+      setStartTime(null);
     }
   }
-  console.log(clickCount);
+
   const { width, height } = useWindowSize();
+
   return (
     <div className="container">
       <div className="inside--container">
@@ -82,9 +109,10 @@ function App() {
         {!tenzies && <span>Rolls {clickCount}</span>}
         {tenzies && (
           <span className="win">
-            You won! with {clickCount} rolls <br />
-            {clickCount < 13 && <span>Excellent 👏👏👏</span>}
-            {clickCount <= 20 && <span>Very Good 👏👏</span>}
+            You won! with {clickCount} rolls in {elapseTime}s
+            <br />
+            {clickCount <= 15 && <span>Excellent 👏👏👏</span>}
+            {clickCount <= 20 && clickCount > 16 && <span>Very Good 👏👏</span>}
             {clickCount < 30 && clickCount > 20 && <span> Good 👏</span>}
           </span>
         )}
