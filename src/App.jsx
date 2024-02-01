@@ -11,7 +11,10 @@ function App() {
   const [clickCount, setClickCount] = useState(0);
   const [startTime, setStartTime] = useState(null);
   const [elapseTime, setElapseTime] = useState(0);
-
+  const [highScore, setHighScore] = useState(() => {
+    const storedHighScore = localStorage.getItem("highScore");
+    return storedHighScore ? parseInt(storedHighScore) : Infinity;
+  });
   let timerInterval;
   React.useEffect(() => {
     if (startTime && !tenzies) {
@@ -39,6 +42,16 @@ function App() {
       setTenzies(true);
     }
   }, [dice]);
+
+  React.useEffect(() => {
+  if (tenzies) {
+    if (elapseTime < highScore) {
+      setHighScore(elapseTime);
+      localStorage.setItem("highScore", elapseTime.toString());
+    }
+  }
+}, [tenzies, elapseTime, highScore]);
+
   function allNewDice() {
     let newDice = [];
     for (let i = 0; i < 10; i++) {
@@ -106,20 +119,23 @@ function App() {
           </p>
         </div>
         <div className={`die--wrapper`}>{diceElements}</div>
-        {!tenzies && <span>Rolls {clickCount}</span>}
+        {!tenzies && <span>Rolls {clickCount}  <br /></span>}
         {tenzies && (
           <span className="win">
             You won! with {clickCount} rolls in {elapseTime}s
             <br />
+            
             {clickCount <= 15 && <span>Excellent 👏👏👏</span>}
             {clickCount <= 20 && clickCount > 16 && <span>Very Good 👏👏</span>}
             {clickCount < 30 && clickCount > 20 && <span> Good 👏</span>}
           </span>
         )}
         <button onClick={rollDice}>{tenzies ? "New game" : "Roll"}</button>
+        <span>highScore: {highScore}s</span>
       </div>
     </div>
   );
 }
 
 export default App;
+ 
