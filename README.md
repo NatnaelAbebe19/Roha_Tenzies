@@ -8,7 +8,7 @@ Languages used
 - CSS
 - REACT
   - You can visit my app on
-    - https://roha-tenzies-40ri8ns6c-natnaelabebe19s-projects.vercel.app/
+    - https://roha-tenzies.vercel.app/
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
