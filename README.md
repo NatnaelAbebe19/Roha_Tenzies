@@ -9,6 +9,7 @@ Languages used
 - HTML 
 - CSS
 - REACT
-  - You can visit my app on
-    - https://roha-tenzies.vercel.app/
+
+## DEMO
+<a href="https://roha-tenzies.vercel.app/" href="_blank">Click me</a>    
 
